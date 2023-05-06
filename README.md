@@ -36,4 +36,4 @@ To deploy the app, run `npm run build` and deploy the contents of the `build` fo
 
 ## Credits
 
-This project was created by Rahul Chauhan as a solution to a problem statement. Feel free to use and modify the code for your own projects. If you have any questions or comments, please contact me through [https://linkedin.com/in/irahul1996]
+This project was created by Rahul Chauhan as a solution to a problem statement. Feel free to use and modify the code for your own projects. If you have any questions or comments, please contact me through `https://linkedin.com/in/irahul1996`
