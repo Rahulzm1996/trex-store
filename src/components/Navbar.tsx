@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import { NAVBAR_DRAWER_WIDTH } from "../constants";
@@ -28,6 +28,7 @@ const Navbar = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  //shows it in menu of mobile view
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Link to="/" className="logo-link">
@@ -104,6 +105,7 @@ const Navbar = () => {
             </Typography>
           </Link>
 
+          {/* //showing products tab in all the view except mobile */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <Link to="/products" className="link">
               <Button sx={{ color: "#fff" }}>Products</Button>

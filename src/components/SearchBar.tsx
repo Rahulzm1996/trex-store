@@ -27,6 +27,8 @@ const SearchBar = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedText(e.target.value);
+
+    //when clear the input field, show all the products
     if (e.target.value === "") {
       setTshirtsList(tshirts);
     }
@@ -58,8 +60,8 @@ const SearchBar = ({
           value={searchedText}
           onChange={handleInputChange}
           onKeyPress={(event) => {
-            console.log({ event });
             if (event.charCode === 13 || event.which === 13) {
+              //handling enter key press here for search
               handleTshirtsSearch();
             }
           }}
@@ -68,6 +70,7 @@ const SearchBar = ({
           sx={{ width: "300px" }}
         />
 
+        {/* //keeping search button disable if searched it empty */}
         <IconButton
           aria-label="search"
           onClick={handleTshirtsSearch}
@@ -116,6 +119,7 @@ const SearchBar = ({
         </IconButton>
       </Box>
 
+      {/* //drawer for filters in mobile view */}
       <Drawer
         anchor="right"
         variant="temporary"

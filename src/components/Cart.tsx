@@ -5,7 +5,6 @@ import { useAppContext } from "../context";
 
 const Cart = () => {
   const { cartItemList, setCartItemList } = useAppContext();
-  console.log({ cartItemList });
 
   const handleDeleteTshirtCart = (id: number) => {
     const newCartItemList = cartItemList.filter((item) => item.id !== id);
@@ -64,7 +63,7 @@ const Cart = () => {
                     Rs {price}
                   </Typography>
                 </Stack>
-                <Typography variant="subtitle2">{qty}</Typography>
+                <Typography variant="subtitle2">Qty : {qty}</Typography>
                 <Button
                   variant="outlined"
                   size="small"

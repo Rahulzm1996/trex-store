@@ -43,7 +43,6 @@ const Filters = ({
   const [type, setType] = useState({ ...selectedFilters.type });
 
   const handleChange = (event, fieldName: string) => {
-    console.log(event.target.name);
     if (fieldName === "color") {
       setColors({
         ...color,
@@ -80,8 +79,6 @@ const Filters = ({
     const filtersToStoreInContext = { color, gender, price, type };
     setSelectedFilters({ ...filtersToStoreInContext });
 
-    console.log({ filtersToStoreInContext });
-
     const applicableFilters = {};
 
     for (const prop in appliedFilters) {
@@ -90,6 +87,7 @@ const Filters = ({
       }
     }
 
+    //filtering out the tshirts based on different applied filters
     const filteredArray = tshirts.filter((obj) => {
       const keys = Object.keys(applicableFilters);
       for (let i = 0; i < keys.length; i++) {
@@ -105,8 +103,6 @@ const Filters = ({
       }
       return true;
     });
-
-    console.log({ filteredArray });
 
     if (filteredArray.length === 0) {
       setTshirtsList(tshirts);

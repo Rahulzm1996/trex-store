@@ -71,6 +71,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
   };
 
   const handleRemoveClick = () => {
+    //show msg when selected qty is 0
     if (count === 0) {
       setSnackbarInfo({
         open: true,
@@ -81,8 +82,8 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
     }
 
     const updatedCount = count - 1;
-    //remove tshirt from cart
     if (updatedCount === 0) {
+      //remove tshirt from cart
       const newCartList = cartItemList.filter((el) => el.id !== id);
       setCartItemList([...newCartList]);
       setSnackbarInfo({
@@ -91,6 +92,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
         variant: "info",
       });
     } else {
+      //subtract qty from cart
       const updatedCartItemList = cartItemList.map((el) => {
         if (el.id === id && count - 1 !== 0) {
           return { ...el, qty: count - 1, total: price * (count - 1) };
@@ -106,6 +108,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
 
   const handleAddClick = () => {
     if (quantity === 0 || quantity <= count + 1) {
+      //show msg when selected qty is >= available quantity
       setSnackbarInfo((prev) => ({
         open: true,
         message: "no more quantity available",
@@ -117,6 +120,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
       cartItemList.length === 0 ||
       cartItemList.findIndex((el) => el.id === id) === -1
     ) {
+      //add tshirt to cart if its not there in cart
       const item = {
         id: id,
         qty: count + 1,
@@ -131,6 +135,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
         variant: "success",
       });
     } else {
+      //update tshirt qty and price in cart if its available in cart
       const updatedCartItemList = cartItemList.map((el) => {
         if (el.id === id) {
           return { ...el, qty: count + 1, total: price * (count + 1) };

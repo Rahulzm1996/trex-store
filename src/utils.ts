@@ -2,8 +2,14 @@ export const convertToNumber = (num: string) => {
   return Number(num.replace(/Rs/, ""));
 };
 
+/*
+converts price label (0-Rs250|Rs251-Rs450|Rs450) into below format
+{
+  min:number,
+  max:number
+}
+*/
 export const generateMinMaxFromLabelOfPrice = (price: string) => {
-  console.log("generate : ", price);
   if (price.includes("-")) {
     const [min, max] = price.split("-");
     let priceInRs = {};
