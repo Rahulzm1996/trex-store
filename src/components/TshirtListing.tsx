@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useFetchTshirts from "../hooks/useFetchTshirts";
 
 import Card from "@mui/material/Card";
@@ -14,9 +14,8 @@ import { Box, IconButton, Stack } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useAppContext } from "../context";
+import Snackbar from "./Snackbar";
 
 const StyledCard = styled(Card)({
   "&.MuiCard-root": {
@@ -32,13 +31,6 @@ const StyledCard = styled(Card)({
       padding: "8px",
     },
   },
-});
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const TshirtListing = ({ tshirtsList }) => {
@@ -67,7 +59,9 @@ const TshirtListing = ({ tshirtsList }) => {
 
 const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
   const { cartItemList, setCartItemList } = useAppContext();
+
   const [count, setCount] = useState(0);
+
   const [snackbarInfo, setSnackbarInfo] = useState({
     open: false,
     message: "",
@@ -94,10 +88,15 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
     if (updatedCount === 0) {
       const newCartList = cartItemList.filter((el) => el.id !== id);
       setCartItemList([...newCartList]);
+      setSnackbarInfo({
+        open: true,
+        message: `${name} tshirt has been removed from the cart`,
+        variant: "info",
+      });
     } else {
       const updatedCartItemList = cartItemList.map((el) => {
         if (el.id === id && count - 1 !== 0) {
-          return { ...el, qty: count - 1, price: price * (count - 1) };
+          return { ...el, qty: count - 1, total: price * (count - 1) };
         }
         return el;
       });
@@ -109,13 +108,12 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
   };
 
   const handleAddClick = () => {
-    if (quantity === 0 || quantity <= count) {
-      setSnackbarInfo({
+    if (quantity === 0 || quantity <= count + 1) {
+      setSnackbarInfo((prev) => ({
         open: true,
         message: "no more quantity available",
         variant: "warning",
-      });
-      return;
+      }));
     }
 
     if (
@@ -125,15 +123,20 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
       const item = {
         id: id,
         qty: count + 1,
-        price: price,
+        total: price,
         product: { id, name, price, color, quantity, imageURL },
       };
       cartItemList.push(item);
       setCartItemList([...cartItemList]);
+      setSnackbarInfo({
+        open: true,
+        message: `${name} tshirt has been added to the cart`,
+        variant: "success",
+      });
     } else {
       const updatedCartItemList = cartItemList.map((el) => {
         if (el.id === id) {
-          return { ...el, qty: count + 1, price: price * (count + 1) };
+          return { ...el, qty: count + 1, total: price * (count + 1) };
         }
         return el;
       });
@@ -142,14 +145,19 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
     setCount((count) => count + 1);
   };
 
-  const handleClose = () => {
-    setSnackbarInfo((prev) => ({ ...prev, open: false }));
-  };
+  useEffect(() => {
+    if (cartItemList.length === 0) return;
 
-  console.log({ id, cartItemList });
+    //setting count here if tshirt is present in cart and
+    //user comes back from cart to products page
+    const currentTshirtIncart = cartItemList.find((el) => el.id === id);
+    if (currentTshirtIncart?.id) {
+      setCount(currentTshirtIncart.qty);
+    }
+  }, [cartItemList, id]);
 
   return (
-    <Grid item xs={12} sm={6} md={6} lg={4}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
       <StyledCard key={id}>
         <CardMedia
           component="img"
@@ -213,6 +221,12 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  "& .MuiIconButton-root.Mui-disabled": {
+                    backgroundColor: "unset",
+                    color: "unset",
+                    pointerEvents: "unset",
+                    cursor: "not-allowed",
+                  },
                 }}
               >
                 <IconButton
@@ -220,6 +234,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
                   size="small"
                   sx={{ color: "#fff" }}
                   onClick={handleRemoveClick}
+                  disabled={count === 0}
                 >
                   <RemoveIcon fontSize="inherit" />
                 </IconButton>
@@ -231,6 +246,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
                   size="small"
                   sx={{ color: "#fff" }}
                   onClick={handleAddClick}
+                  disabled={count >= quantity ? true : false}
                 >
                   <AddIcon fontSize="inherit" />
                 </IconButton>
@@ -239,20 +255,10 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
           </Stack>
         </CardContent>
       </StyledCard>
-      <Snackbar
-        open={snackbarInfo.open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={snackbarInfo.variant}
-          sx={{ width: "100%" }}
-        >
-          {snackbarInfo.message}
-        </Alert>
-      </Snackbar>
+
+      {snackbarInfo.open && (
+        <Snackbar {...snackbarInfo} setSnackbarInfo={setSnackbarInfo} />
+      )}
     </Grid>
   );
 };

@@ -7,6 +7,7 @@ import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/system";
+import { useAppContext } from "../context";
 
 const StyledFormControlLabel = styled(FormControlLabel)({
   "&.MuiFormControlLabel-root": {
@@ -25,32 +26,21 @@ const StyledFormControlLabel = styled(FormControlLabel)({
 const StyledFormLabel = styled(FormLabel)({
   "&.MuiFormLabel-root": {
     fontFamily: "inherit",
+    fontWeight: "bold",
   },
 });
 
-const Filters = ({ tshirts, tshirtsList, setTshirtsList }) => {
-  const [color, setColors] = useState({
-    Red: false,
-    Green: false,
-    Blue: false,
-  });
-
-  const [gender, setGender] = useState({
-    Men: false,
-    Women: false,
-  });
-
-  const [price, setPrice] = useState({
-    "0-Rs250": false,
-    "Rs251-Rs450": false,
-    Rs450: false,
-  });
-
-  const [type, setType] = useState({
-    Polo: false,
-    Hoodie: false,
-    Basic: false,
-  });
+const Filters = ({
+  tshirts,
+  tshirtsList,
+  setTshirtsList,
+  selectedFilters,
+  setSelectedFilters,
+}) => {
+  const [color, setColors] = useState({ ...selectedFilters.color });
+  const [gender, setGender] = useState({ ...selectedFilters.gender });
+  const [price, setPrice] = useState({ ...selectedFilters.price });
+  const [type, setType] = useState({ ...selectedFilters.type });
 
   const handleChange = (event, fieldName) => {
     console.log(event.target.name);
@@ -77,6 +67,8 @@ const Filters = ({ tshirts, tshirtsList, setTshirtsList }) => {
     }
   };
 
+  console.log("rendering...", { selectedFilters });
+
   useEffect(() => {
     const appliedFilters = {
       color: Object.keys(color).filter((key) => color[key]),
@@ -86,6 +78,11 @@ const Filters = ({ tshirts, tshirtsList, setTshirtsList }) => {
         .map(generateMinMaxFromLabelOfPrice),
       type: Object.keys(type).filter((key) => type[key]),
     };
+
+    const filtersToStoreInContext = { color, gender, price, type };
+    setSelectedFilters({ ...filtersToStoreInContext });
+
+    console.log({ filtersToStoreInContext });
 
     const applicableFilters = {};
 
@@ -125,6 +122,14 @@ const Filters = ({ tshirts, tshirtsList, setTshirtsList }) => {
     }
   }, [color, gender, price, type]);
 
+  //synching the local state with context filters state
+  useEffect(() => {
+    setColors({ ...selectedFilters.color });
+    setGender({ ...selectedFilters.gender });
+    setPrice({ ...selectedFilters.price });
+    setType({ ...selectedFilters.type });
+  }, [JSON.stringify(selectedFilters)]);
+
   const convertToNumber = (num: string) => {
     return Number(num.replace(/Rs/, ""));
   };
@@ -149,7 +154,14 @@ const Filters = ({ tshirts, tshirtsList, setTshirtsList }) => {
   };
 
   return (
-    <Box sx={{ width: "300px", border: "1px solid green", padding: "30px" }}>
+    <Box
+      sx={{
+        width: "270px",
+        padding: "30px",
+        transition: "all 0.3s linear",
+      }}
+      className="filters"
+    >
       <Box
         sx={{
           width: "100%",

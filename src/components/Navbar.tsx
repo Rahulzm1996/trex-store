@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Badge } from "@mui/material";
 import { useAppContext } from "../context";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ["Products"];
@@ -28,18 +29,42 @@ const Navbar = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  console.log({ cartItemList });
-
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: "16px !important" }}>
         TeeRex Store
       </Typography>
       <Divider />
       <List>
         <ListItem key="Products" disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
-            <ListItemText primary="Products" />
+            <Link to="/products" className="link">
+              <ListItemText
+                primary="Products"
+                sx={{ color: "#242525", fontWeight: "500" }}
+              />
+            </Link>
+          </ListItemButton>
+        </ListItem>
+        <ListItem key="cart" disablePadding>
+          <ListItemButton sx={{ textAlign: "center" }}>
+            <Link to="/cart" className="link">
+              <Badge
+                badgeContent={cartItemList.length}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    color: "#fff",
+                    backgroundColor: "#242525",
+                    left: "18px",
+                  },
+                }}
+              >
+                <ListItemText
+                  primary="Cart"
+                  sx={{ color: "#242525", fontWeight: "500" }}
+                />
+              </Badge>
+            </Link>
           </ListItemButton>
         </ListItem>
       </List>
@@ -56,37 +81,37 @@ const Navbar = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             TeeRex Store
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Button sx={{ color: "#fff" }}>Products</Button>
-            <IconButton
-              color="primary"
-              aria-label="add to shopping cart"
-              sx={{ color: "#fff" }}
-            >
-              <Badge
-                badgeContent={cartItemList.length}
-                sx={{
-                  color: "#fff",
-                  "& .MuiBadge-badge": {
-                    left: "4px",
-                    top: "-2px",
-                  },
-                }}
+            <Link to="/products" className="link">
+              <Button sx={{ color: "#fff" }}>Products</Button>
+            </Link>
+            <Link to="/cart" className="link">
+              <IconButton
+                color="primary"
+                aria-label="add to shopping cart"
+                sx={{ color: "#fff" }}
               >
-                <ShoppingCartOutlinedIcon color="inherit" fontSize="small" />
-              </Badge>
-            </IconButton>
+                <Badge
+                  badgeContent={cartItemList.length}
+                  sx={{
+                    color: "#fff",
+                    "& .MuiBadge-badge": {
+                      left: "4px",
+                      top: "-2px",
+                    },
+                  }}
+                >
+                  <ShoppingCartOutlinedIcon color="inherit" fontSize="small" />
+                </Badge>
+              </IconButton>
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>

@@ -2,10 +2,27 @@ import React from "react";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import ConnectWithoutContactOutlinedIcon from "@mui/icons-material/ConnectWithoutContactOutlined";
 import DatasetLinkedOutlinedIcon from "@mui/icons-material/DatasetLinkedOutlined";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const Footer = () => {
+  const theme = useTheme();
+
   return (
-    <div>
+    <Box
+      sx={{
+        "& .section": {
+          [theme.breakpoints.down("sm")]: {
+            padding: "1rem 0",
+          },
+        },
+        "& .footer-icons": {
+          [theme.breakpoints.down("sm")]: {
+            marginBottom: "1rem",
+          },
+        },
+      }}
+    >
       <footer className="section footer">
         <ul className="footer-icons">
           <li>
@@ -32,7 +49,7 @@ const Footer = () => {
           <span> {new Date().getFullYear()}</span>. all rights reserved
         </p>
       </footer>
-    </div>
+    </Box>
   );
 };
 

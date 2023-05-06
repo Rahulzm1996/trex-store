@@ -4,10 +4,11 @@ import Filters from "./Filters";
 import TshirtListing from "./TshirtListing";
 import { Box } from "@mui/material";
 import useFetchTshirts from "../hooks/useFetchTshirts";
-import { filter, isEmpty } from "lodash";
+import { useAppContext } from "../context";
 
 const Layout = () => {
   const { tshirts } = useFetchTshirts();
+  const { selectedFilters, setSelectedFilters } = useAppContext();
   const [tshirtsList, setTshirtsList] = useState();
 
   useEffect(() => {
@@ -20,15 +21,21 @@ const Layout = () => {
         tshirts={tshirts}
         tshirtsList={tshirtsList}
         setTshirtsList={setTshirtsList}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
       />
-      <div style={{ display: "flex" }}>
-        <Filters
-          setTshirtsList={setTshirtsList}
-          tshirtsList={tshirtsList}
-          tshirts={tshirts}
-        />
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <Filters
+            setTshirtsList={setTshirtsList}
+            tshirtsList={tshirtsList}
+            tshirts={tshirts}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+          />
+        </Box>
         <TshirtListing tshirtsList={tshirtsList} />
-      </div>
+      </Box>
     </Box>
   );
 };
