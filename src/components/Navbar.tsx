@@ -108,28 +108,28 @@ const Navbar = () => {
             <Link to="/products" className="link">
               <Button sx={{ color: "#fff" }}>Products</Button>
             </Link>
-
-            <Link to="/cart" className="link">
-              <IconButton
-                color="primary"
-                aria-label="add to shopping cart"
-                sx={{ color: "#fff" }}
-              >
-                <Badge
-                  badgeContent={cartItemList.length}
-                  sx={{
-                    color: "#fff",
-                    "& .MuiBadge-badge": {
-                      left: "4px",
-                      top: "-2px",
-                    },
-                  }}
-                >
-                  <ShoppingCartOutlinedIcon color="inherit" fontSize="small" />
-                </Badge>
-              </IconButton>
-            </Link>
           </Box>
+
+          <Link to="/cart" className="link">
+            <IconButton
+              color="primary"
+              aria-label="add to shopping cart"
+              sx={{ color: "#fff" }}
+            >
+              <Badge
+                badgeContent={cartItemList.length}
+                sx={{
+                  color: "#fff",
+                  "& .MuiBadge-badge": {
+                    left: "4px",
+                    top: "-2px",
+                  },
+                }}
+              >
+                <ShoppingCartOutlinedIcon color="inherit" fontSize="small" />
+              </Badge>
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
 
