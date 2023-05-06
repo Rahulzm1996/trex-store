@@ -2,13 +2,25 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 
 import { useAppContext } from "../context";
+import Snackbar from "./Snackbar";
+import { useState } from "react";
 
 const Cart = () => {
   const { cartItemList, setCartItemList } = useAppContext();
+  const [snackbarInfo, setSnackbarInfo] = useState({
+    open: false,
+    message: "",
+    variant: "success",
+  });
 
-  const handleDeleteTshirtCart = (id: number) => {
+  const handleDeleteTshirtCart = (id: number, name: string | undefined) => {
     const newCartItemList = cartItemList.filter((item) => item.id !== id);
     setCartItemList([...newCartItemList]);
+    setSnackbarInfo({
+      open: true,
+      message: `${name} has been removed from cart`,
+      variant: "info",
+    });
   };
 
   return (
@@ -16,6 +28,10 @@ const Cart = () => {
       <Typography variant="body1" mb="16px !important">
         Shopping Cart
       </Typography>
+
+      {snackbarInfo.open && (
+        <Snackbar {...snackbarInfo} setSnackbarInfo={setSnackbarInfo} />
+      )}
 
       {cartItemList.length === 0 ? (
         <Typography variant="body1" mb="16px !important">
@@ -67,7 +83,7 @@ const Cart = () => {
                 <Button
                   variant="outlined"
                   size="small"
-                  onClick={() => handleDeleteTshirtCart(id)}
+                  onClick={() => handleDeleteTshirtCart(id, name)}
                   sx={{
                     color: "#242525",
                     borderColor: "#242525",

@@ -6,11 +6,13 @@ import { ITshirt } from "../types";
 
 const useFetchTshirts = () => {
   const [tshirts, setTshirts] = useState<Array<ITshirt>>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchTshirts = async () => {
     try {
       const { data, status } = await axios.get(fetchTshirtsUrl);
       if (status === 200) {
+        setLoading(false);
         setTshirts(data);
       }
     } catch (error) {
@@ -19,11 +21,12 @@ const useFetchTshirts = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     setTshirts([]);
     fetchTshirts();
   }, []);
 
-  return { tshirts };
+  return { loading, tshirts };
 };
 
 export default useFetchTshirts;

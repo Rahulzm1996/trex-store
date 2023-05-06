@@ -4,6 +4,7 @@ import { Box, IconButton, Stack } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { styled } from "@mui/material/styles";
@@ -30,7 +31,13 @@ const StyledCard = styled(Card)({
   },
 });
 
-const TshirtListing = ({ tshirtsList }: { tshirtsList: Array<ITshirt> }) => {
+const TshirtListing = ({
+  loading,
+  tshirtsList,
+}: {
+  loading: boolean;
+  tshirtsList: Array<ITshirt>;
+}) => {
   return (
     <Box
       sx={{
@@ -40,16 +47,29 @@ const TshirtListing = ({ tshirtsList }: { tshirtsList: Array<ITshirt> }) => {
         overflowY: "auto",
       }}
     >
-      <Grid
-        container
-        rowSpacing={6}
-        columnSpacing={6}
-        sx={{ height: "100vh", overflowY: "scroll" }}
-      >
-        {tshirtsList?.map((tshirt) => (
-          <Tshirt {...tshirt} key={tshirt.id} />
-        ))}
-      </Grid>
+      {loading ? (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "100px",
+          }}
+        >
+          <CircularProgress sx={{ color: "#303132" }} />
+        </Box>
+      ) : (
+        <Grid
+          container
+          rowSpacing={6}
+          columnSpacing={6}
+          sx={{ height: "100vh", overflowY: "scroll" }}
+        >
+          {tshirtsList?.map((tshirt) => (
+            <Tshirt {...tshirt} key={tshirt.id} />
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 };
@@ -163,7 +183,7 @@ const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
       <StyledCard key={id}>
         <CardMedia
           component="img"
-          alt="green iguana"
+          alt={name}
           width="100%"
           height="180"
           image={imageURL}

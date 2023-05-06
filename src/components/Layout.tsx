@@ -9,7 +9,7 @@ import { useAppContext } from "../context";
 import useFetchTshirts from "../hooks/useFetchTshirts";
 
 const Layout = () => {
-  const { tshirts } = useFetchTshirts();
+  const { loading, tshirts } = useFetchTshirts();
   const { selectedFilters, setSelectedFilters } = useAppContext();
   const [tshirtsList, setTshirtsList] = useState<Array<ITshirt>>([]);
 
@@ -36,7 +36,7 @@ const Layout = () => {
             setSelectedFilters={setSelectedFilters}
           />
         </Box>
-        <TshirtListing tshirtsList={tshirtsList} />
+        <TshirtListing loading={loading} tshirtsList={tshirtsList} />
       </Box>
     </Box>
   );

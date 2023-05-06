@@ -23,12 +23,6 @@ const Snackbar = ({
     setSnackbarInfo({ open: false, message: "", variant: "" });
   };
 
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       setShow(true);
-  //     }, 1);
-  //   }, [message]);
-
   return (
     <MSnackbar
       open={show}

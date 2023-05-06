@@ -38,20 +38,21 @@ const Navbar = () => {
       </Link>
 
       <Divider />
-      <List>
-        <ListItem key="Products" disablePadding>
-          <ListItemButton sx={{ textAlign: "center" }}>
-            <Link to="/products" className="link">
+      <List sx={{ paddingTop: "unset" }}>
+        <Link to="/products" className="link">
+          <ListItem key="Products" disablePadding>
+            <ListItemButton>
               <ListItemText
                 primary="Products"
                 sx={{ color: "#242525", fontWeight: "500" }}
               />
-            </Link>
-          </ListItemButton>
-        </ListItem>
-        <ListItem key="cart" disablePadding>
-          <ListItemButton sx={{ textAlign: "center" }}>
-            <Link to="/cart" className="link">
+            </ListItemButton>
+          </ListItem>
+        </Link>
+
+        <Link to="/cart" className="link">
+          <ListItem key="cart" disablePadding>
+            <ListItemButton>
               <Badge
                 badgeContent={cartItemList.length}
                 sx={{
@@ -67,9 +68,9 @@ const Navbar = () => {
                   sx={{ color: "#242525", fontWeight: "500" }}
                 />
               </Badge>
-            </Link>
-          </ListItemButton>
-        </ListItem>
+            </ListItemButton>
+          </ListItem>
+        </Link>
       </List>
     </Box>
   );
