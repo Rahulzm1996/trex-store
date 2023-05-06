@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-import useFetchTshirts from "../hooks/useFetchTshirts";
-
+import AddIcon from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
+import { Box, IconButton, Stack } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-
-import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-
-import { Box, IconButton, Stack } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
 
-import { useAppContext } from "../context";
+import { ITshirt } from "../types";
 import Snackbar from "./Snackbar";
+import { useAppContext } from "../context";
 
 const StyledCard = styled(Card)({
   "&.MuiCard-root": {
@@ -33,7 +30,7 @@ const StyledCard = styled(Card)({
   },
 });
 
-const TshirtListing = ({ tshirtsList }) => {
+const TshirtListing = ({ tshirtsList }: { tshirtsList: Array<ITshirt> }) => {
   return (
     <Box
       sx={{
@@ -57,7 +54,7 @@ const TshirtListing = ({ tshirtsList }) => {
   );
 };
 
-const Tshirt = ({ id, imageURL, name, price, color, quantity }) => {
+const Tshirt = ({ id, imageURL, name, price, color, quantity }: ITshirt) => {
   const { cartItemList, setCartItemList } = useAppContext();
 
   const [count, setCount] = useState(0);

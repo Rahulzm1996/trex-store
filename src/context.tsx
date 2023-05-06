@@ -1,36 +1,20 @@
 import React, { useState, createContext, useContext } from "react";
 
-const AppContext = createContext({});
+import { IAppProvider, ICartItem } from "./types";
+import { selectedFiltersInitialValue } from "./constants";
 
-const selectedFiltersInitialValue = {
-  color: {
-    Red: true,
-    Green: false,
-    Blue: false,
-  },
-  gender: {
-    Men: false,
-    Women: false,
-  },
-  price: {
-    "0-Rs250": false,
-    "Rs251-Rs450": false,
-    Rs450: false,
-  },
-  type: {
-    Polo: false,
-    Hoodie: false,
-    Basic: false,
-  },
-};
+const AppContext = createContext<IAppProvider>({
+  cartItemList: [],
+  selectedFilters: selectedFiltersInitialValue,
+  setCartItemList: () => null,
+  setSelectedFilters: () => null,
+});
 
-const AppProvider = ({ children }) => {
-  const [cartItemList, setCartItemList] = useState([]);
+const AppProvider = ({ children }: { children: React.ReactNode }) => {
+  const [cartItemList, setCartItemList] = useState<Array<ICartItem>>([]);
   const [selectedFilters, setSelectedFilters] = useState(
     selectedFiltersInitialValue
   );
-
-  console.log({ cartItemList });
 
   return (
     <AppContext.Provider

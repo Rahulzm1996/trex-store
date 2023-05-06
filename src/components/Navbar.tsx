@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,16 +13,16 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Badge } from "@mui/material";
-import { useAppContext } from "../context";
-import { Link } from "react-router-dom";
+import Badge from "@mui/material/Badge";
+import { Link, Navigate } from "react-router-dom";
+import { useState } from "react";
 
-const drawerWidth = 240;
-const navItems = ["Products"];
+import { NAVBAR_DRAWER_WIDTH } from "../constants";
+import { useAppContext } from "../context";
 
 const Navbar = () => {
   const { cartItemList } = useAppContext();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -31,9 +30,12 @@ const Navbar = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: "16px !important" }}>
-        TeeRex Store
-      </Typography>
+      <Link to="/" className="logo-link">
+        <Typography variant="h6" sx={{ my: "16px !important" }}>
+          TeeRex Store
+        </Typography>
+      </Link>
+
       <Divider />
       <List>
         <ListItem key="Products" disablePadding>
@@ -72,7 +74,17 @@ const Navbar = () => {
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        "& .logo-link": {
+          display: "inline-block",
+          color: "#fff",
+          marginRight: "auto",
+          cursor: "pointer",
+        },
+      }}
+    >
       <CssBaseline />
       <AppBar component="nav">
         <Toolbar sx={{ background: "#2d2d2d", color: "#fff" }}>
@@ -85,13 +97,18 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TeeRex Store
-          </Typography>
+
+          <Link to="/" className="logo-link">
+            <Typography variant="h6" sx={{ my: "16px !important" }}>
+              TeeRex Store
+            </Typography>
+          </Link>
+
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <Link to="/products" className="link">
               <Button sx={{ color: "#fff" }}>Products</Button>
             </Link>
+
             <Link to="/cart" className="link">
               <IconButton
                 color="primary"
@@ -115,6 +132,7 @@ const Navbar = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
       <Box component="nav">
         <Drawer
           variant="temporary"
@@ -125,9 +143,17 @@ const Navbar = () => {
           }}
           sx={{
             display: { xs: "block", sm: "none" },
+
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              width: drawerWidth,
+              width: NAVBAR_DRAWER_WIDTH,
+            },
+
+            "& .logo-link": {
+              display: "inline-block",
+              color: "#000",
+              marginRight: "auto",
+              cursor: "pointer",
             },
           }}
         >

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-const fetchTshirtsUrl =
-  "https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json";
+import { fetchTshirtsUrl } from "../constants";
+import { ITshirt } from "../types";
 
 const useFetchTshirts = () => {
-  const [tshirts, setTshirts] = useState([]);
+  const [tshirts, setTshirts] = useState<Array<ITshirt>>([]);
 
   const fetchTshirts = async () => {
     try {

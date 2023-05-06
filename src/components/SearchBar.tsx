@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-
 import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import IconButton from "@mui/material/IconButton";
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import Drawer from "@mui/material/Drawer";
-import Filters from "./Filters";
-import { Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import Drawer from "@mui/material/Drawer";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import Input from "@mui/material/Input";
+import IconButton from "@mui/material/IconButton";
+import React, { useState } from "react";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { Stack, Typography } from "@mui/material";
+
+import Filters from "./Filters";
+import { ISearchBarProps } from "../types";
 
 const SearchBar = ({
   tshirts,
@@ -16,16 +17,15 @@ const SearchBar = ({
   setTshirtsList,
   selectedFilters,
   setSelectedFilters,
-}) => {
+}: ISearchBarProps) => {
   const [searchedText, setSearchedText] = useState("");
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setIsDrawerOpen((prevState) => !prevState);
   };
 
-  const handleInputChange = (e) => {
-    console.log(e);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedText(e.target.value);
     if (e.target.value === "") {
       setTshirtsList(tshirts);
@@ -67,6 +67,7 @@ const SearchBar = ({
           inputProps={{ "aria-label": "search box" }}
           sx={{ width: "300px" }}
         />
+
         <IconButton
           aria-label="search"
           onClick={handleTshirtsSearch}
@@ -94,6 +95,7 @@ const SearchBar = ({
         >
           <SearchOutlinedIcon />
         </IconButton>
+
         <IconButton
           aria-label="filter"
           sx={{

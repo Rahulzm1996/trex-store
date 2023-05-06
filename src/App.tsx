@@ -1,18 +1,18 @@
-import { useState } from "react";
-import Navbar from "./components/Navbar";
-import Layout from "./components/Layout";
-import Footer from "./components/Footer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Box } from "@mui/material";
 import "./App.css";
-import { AppProvider } from "./context";
 
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
-import NotFoundPage from "./components/NotFoundPage";
+import { AppProvider } from "./context";
 import Cart from "./components/Cart";
+import Footer from "./components/Footer";
+import Layout from "./components/Layout";
+import Navbar from "./components/Navbar";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
     <AppProvider>
-      <div style={{ width: "100vw", height: "100vh" }}>
+      <Box sx={{ width: "100vw", height: "100vh" }}>
         <BrowserRouter>
           <Navbar />
           <Routes>
@@ -23,7 +23,7 @@ function App() {
           </Routes>
         </BrowserRouter>
         <Footer />
-      </div>
+      </Box>
     </AppProvider>
   );
 }

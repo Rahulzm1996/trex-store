@@ -1,15 +1,17 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
-import SearchBar from "./SearchBar";
-import Filters from "./Filters";
-import TshirtListing from "./TshirtListing";
 import { Box } from "@mui/material";
-import useFetchTshirts from "../hooks/useFetchTshirts";
+import { useEffect, useState } from "react";
+
+import Filters from "./Filters";
+import { ITshirt } from "../types";
+import SearchBar from "./SearchBar";
+import TshirtListing from "./TshirtListing";
 import { useAppContext } from "../context";
+import useFetchTshirts from "../hooks/useFetchTshirts";
 
 const Layout = () => {
   const { tshirts } = useFetchTshirts();
   const { selectedFilters, setSelectedFilters } = useAppContext();
-  const [tshirtsList, setTshirtsList] = useState();
+  const [tshirtsList, setTshirtsList] = useState<Array<ITshirt>>([]);
 
   useEffect(() => {
     setTshirtsList(tshirts);

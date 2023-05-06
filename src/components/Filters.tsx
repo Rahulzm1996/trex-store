@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
 import { Box, Stack } from "@mui/material";
-
+import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/system";
-import { useAppContext } from "../context";
+import { useEffect, useState } from "react";
+
+import { generateMinMaxFromLabelOfPrice } from "../utils";
+import { IFiltersProps } from "../types";
 
 const StyledFormControlLabel = styled(FormControlLabel)({
   "&.MuiFormControlLabel-root": {
@@ -32,17 +33,16 @@ const StyledFormLabel = styled(FormLabel)({
 
 const Filters = ({
   tshirts,
-  tshirtsList,
   setTshirtsList,
   selectedFilters,
   setSelectedFilters,
-}) => {
+}: IFiltersProps) => {
   const [color, setColors] = useState({ ...selectedFilters.color });
   const [gender, setGender] = useState({ ...selectedFilters.gender });
   const [price, setPrice] = useState({ ...selectedFilters.price });
   const [type, setType] = useState({ ...selectedFilters.type });
 
-  const handleChange = (event, fieldName) => {
+  const handleChange = (event, fieldName: string) => {
     console.log(event.target.name);
     if (fieldName === "color") {
       setColors({
@@ -67,8 +67,6 @@ const Filters = ({
     }
   };
 
-  console.log("rendering...", { selectedFilters });
-
   useEffect(() => {
     const appliedFilters = {
       color: Object.keys(color).filter((key) => color[key]),
@@ -87,15 +85,10 @@ const Filters = ({
     const applicableFilters = {};
 
     for (const prop in appliedFilters) {
-      if (
-        appliedFilters.hasOwnProperty(prop) &&
-        appliedFilters[prop].length > 0
-      ) {
+      if (appliedFilters[prop].length > 0) {
         applicableFilters[prop] = appliedFilters[prop];
       }
     }
-
-    console.log({ appliedFilters, applicableFilters });
 
     const filteredArray = tshirts.filter((obj) => {
       const keys = Object.keys(applicableFilters);
@@ -120,7 +113,7 @@ const Filters = ({
     } else {
       setTshirtsList(filteredArray);
     }
-  }, [color, gender, price, type]);
+  }, [color, gender, price, tshirts, type]);
 
   //synching the local state with context filters state
   useEffect(() => {
@@ -129,29 +122,6 @@ const Filters = ({
     setPrice({ ...selectedFilters.price });
     setType({ ...selectedFilters.type });
   }, [JSON.stringify(selectedFilters)]);
-
-  const convertToNumber = (num: string) => {
-    return Number(num.replace(/Rs/, ""));
-  };
-
-  const generateMinMaxFromLabelOfPrice = (price: string) => {
-    console.log("generate : ", price);
-    if (price.includes("-")) {
-      const [min, max] = price.split("-");
-      let priceInRs = {};
-      if (Number(min) === 0) {
-        priceInRs = { min: 0, max: convertToNumber(max) };
-      } else {
-        priceInRs = {
-          min: convertToNumber(min),
-          max: convertToNumber(max),
-        };
-      }
-      return priceInRs;
-    } else {
-      return { min: 0, max: convertToNumber(price) };
-    }
-  };
 
   return (
     <Box
@@ -201,7 +171,13 @@ const Filters = ({
             <FormGroup onChange={(event) => handleChange(event, "price")}>
               {Object.keys(price).map((key) => (
                 <StyledFormControlLabel
-                  control={<Checkbox checked={price[key]} name={key} />}
+                  control={
+                    <Checkbox
+                      onChange={(e) => e}
+                      checked={price[key]}
+                      name={key}
+                    />
+                  }
                   key={key}
                   label={key}
                 />
