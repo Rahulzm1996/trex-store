@@ -2,6 +2,10 @@
 
 This is a simple webapp that allows customers to browse through a catalog of t-shirts, add t-shirts to the shopping cart, and checkout the items in the cart.
 
+## Live website
+
+https://teerex-stores.netlify.app/
+
 ## Technologies Used
 
 - React
